@@ -14,7 +14,7 @@ import {
 import Camera from 'react-native-camera';
 import * as Progress from 'react-native-progress';
 
-import config from 'config/config.json';
+import config from './config/config.json';
 
 class bitcampScannerApp extends Component {
 
@@ -50,7 +50,6 @@ class bitcampScannerApp extends Component {
           onBarCodeRead={this.readQrCode}
           style={styles.preview}
           aspect={Camera.constants.Aspect.fill}>
-          <Text style={styles.capture} onPress={this.takePicture.bind(this)}>[CAPTURE]</Text>
         </Camera>
         {this.state.requesting && !this.state.dataFound && overlay}
         {this.state.requesting && !this.state.dataFound && progressCircle}
