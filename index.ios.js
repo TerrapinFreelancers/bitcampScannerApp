@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 import Camera from 'react-native-camera';
 import * as Progress from 'react-native-progress';
+import Orientation from 'react-native-orientation';
 
 import config from './config/config.json';
 
@@ -27,6 +28,10 @@ class bitcampScannerApp extends Component {
       requesting:false,
       dataFound:false
     };
+  }
+
+  componentDidMount() {
+    Orientation.lockToPortrait();
   }
 
   render() {
