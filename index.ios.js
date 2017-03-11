@@ -14,6 +14,7 @@ import {
 import Camera from 'react-native-camera';
 import * as Progress from 'react-native-progress';
 
+import config from 'config/config.json';
 
 class bitcampScannerApp extends Component {
 
@@ -73,7 +74,7 @@ class bitcampScannerApp extends Component {
       fetch('https://zkrpy6ly94.execute-api.us-east-1.amazonaws.com/prod/?status=success&email=' + data.data, {
         method: 'GET',
         headers:{
-          'x-api-key': 'gU8WEIv4bu3QmJYg20gja8NkoeP2SGaQaveH0qdv'
+          'x-api-key': config.apiKey
         }
       })
         .then(function(response){
@@ -160,7 +161,7 @@ class bitcampScannerApp extends Component {
   //    this.setState({requesting:true});
   //    var thisBinded = this;
 
-  //    fetch('https://zkrpy6ly94.execute-api.us-east-1.amazonaws.com/prod/?key=gU8WEIv4bu3QmJYg20gja8NkoeP2SGaQaveH0qdv&status=success&email=warunayapa619@gmail.com')
+  //    fetch('https://zkrpy6ly94.execute-api.us-east-1.amazonaws.com/prod/?key=' + config.apiKey + '&status=success&email=' + config.email)
   //    .then(function(response){
   //      console.log(response);
   //      console.log((typeof response));
