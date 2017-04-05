@@ -13,7 +13,9 @@ import {
 } from 'react-native';
 import Camera from 'react-native-camera';
 import * as Progress from 'react-native-progress';
+import Orientation from 'react-native-orientation';
 
+import config from './config/config.json';
 
 class bitcampScannerApp extends Component {
 
@@ -26,6 +28,10 @@ class bitcampScannerApp extends Component {
       requesting:false,
       dataFound:false
     };
+  }
+
+  componentDidMount() {
+    Orientation.lockToPortrait();
   }
 
   render() {
@@ -49,7 +55,6 @@ class bitcampScannerApp extends Component {
           onBarCodeRead={this.readQrCode}
           style={styles.preview}
           aspect={Camera.constants.Aspect.fill}>
-          <Text style={styles.capture} onPress={this.takePicture.bind(this)}>[CAPTURE]</Text>
         </Camera>
         {this.state.requesting && !this.state.dataFound && overlay}
         {this.state.requesting && !this.state.dataFound && progressCircle}
@@ -73,7 +78,7 @@ class bitcampScannerApp extends Component {
       fetch('https://zkrpy6ly94.execute-api.us-east-1.amazonaws.com/prod/?status=success&email=' + data.data, {
         method: 'GET',
         headers:{
-          'x-api-key': ''
+          'x-api-key': config.apiKey
         }
       })
         .then(function(response){
@@ -150,76 +155,76 @@ class bitcampScannerApp extends Component {
     }
   }
 
-  takePicture() {
-    // fetch('https://sheets.googleapis.com/v4/spreadsheets/1Gs_4u3apbF_z0ekOaiN98jh4nntB9wYMmGYiJpuJNAM/values/Sheet1!A1:B2')
-    //   .then((response) => AlertIOS.alert("Response", response));
-    // this.camera.capture()
-    //   .then((data) => console.log(data))
-    //   .catch(err => console.error(err));
-    if (!this.state.requesting){
-      this.setState({requesting:true});
-      var thisBinded = this;
+  //takePicture() {
+  //  // fetch('https://sheets.googleapis.com/v4/spreadsheets/1Gs_4u3apbF_z0ekOaiN98jh4nntB9wYMmGYiJpuJNAM/values/Sheet1!A1:B2')
+  //  //   .then((response) => AlertIOS.alert("Response", response));
+  //  // this.camera.capture()
+  //  //   .then((data) => console.log(data))
+  //  //   .catch(err => console.error(err));
+  //  if (!this.state.requesting){
+  //    this.setState({requesting:true});
+  //    var thisBinded = this;
 
-      fetch('https://zkrpy6ly94.execute-api.us-east-1.amazonaws.com/prod/?key=gU8WEIv4bu3QmJYg20gja8NkoeP2SGaQaveH0qdv&status=success&email=warunayapa619@gmail.com')
-      .then(function(response){
-        console.log(response);
-        console.log((typeof response));
-        console.log(response._bodyInit);
-        let temporary = JSON.parse(response._bodyInit);
-        console.log(temporary);
-        console.log(temporary['body-json']);
-        let actualData = JSON.parse(temporary['body-json']);
-        console.log(actualData);
-        console.log(actualData.status + actualData.email+actualData.name)
-      Alert.alert('Barcode Found!',
-      // "Status: " + response._bodyInit.status + "\nEmail: " + response._bodyInit.email + "\nName: " + response._bodyInit.name,
-      // JSON.stringify(response),
-      [{text:'OK', onPress: () => thisBinded.setState({requesting:false})}]);
+  //    fetch('https://zkrpy6ly94.execute-api.us-east-1.amazonaws.com/prod/?key=' + config.apiKey + '&status=success&email=' + config.email)
+  //    .then(function(response){
+  //      console.log(response);
+  //      console.log((typeof response));
+  //      console.log(response._bodyInit);
+  //      let temporary = JSON.parse(response._bodyInit);
+  //      console.log(temporary);
+  //      console.log(temporary['body-json']);
+  //      let actualData = JSON.parse(temporary['body-json']);
+  //      console.log(actualData);
+  //      console.log(actualData.status + actualData.email+actualData.name)
+  //    Alert.alert('Barcode Found!',
+  //    // "Status: " + response._bodyInit.status + "\nEmail: " + response._bodyInit.email + "\nName: " + response._bodyInit.name,
+  //    // JSON.stringify(response),
+  //    [{text:'OK', onPress: () => thisBinded.setState({requesting:false})}]);
 
-      }).catch((error)=>{
-      Alert.alert('ERROR',
-      error,
-      [{text:'OK', onPress: () => thisBinded.setState({requesting:false})}]);
+  //    }).catch((error)=>{
+  //    Alert.alert('ERROR',
+  //    error,
+  //    [{text:'OK', onPress: () => thisBinded.setState({requesting:false})}]);
 
-      });
+  //    });
 
-      // setTimeout(function(){
-      //   let name = "George Tong";
-      //
-      //   thisBinded.welcome = <View style={styles.progressOverlay}>
-      //                     <View>
-      //                       <View style={styles.welcomeBox}>
-      //                         <Text style={styles.welcomeText}>Welcome</Text>
-      //                         <Text style={styles.welcomeText}>{name}</Text>
-      //                       </View>
-      //                       <Button
-      //                           onPress={()=>thisBinded.setState({requesting:false, dataFound:false})}
-      //                           title="OK"
-      //                           color="blue"
-      //                       />
-      //                     </View>
-      //                   </View>;
-      //   thisBinded.welcome = <View style={styles.progressOverlay}>
-      //                     <View>
-      //                       <View style={styles.errorBox}>
-      //                         <Text style={styles.welcomeText}>ERROR</Text>
-      //                         <Text style={styles.welcomeText}>User not found</Text>
-      //                       </View>
-      //                       <Button
-      //                           onPress={()=>thisBinded.setState({requesting:false, dataFound:false})}
-      //                           title="OK"
-      //                       />
-      //                     </View>
-      //                   </View>;
-      //   thisBinded.setState({dataFound:true});
-      //   // Alert.alert('Barcode Found!',
-      //   // "Type: \nData: ",
-      //   // [{text:'OK', onPress: () => thisBinded.setState({requesting:false})}]);
-      // }, 1000);
-      //sheets api call
+  //    // setTimeout(function(){
+  //    //   let name = "George Tong";
+  //    //
+  //    //   thisBinded.welcome = <View style={styles.progressOverlay}>
+  //    //                     <View>
+  //    //                       <View style={styles.welcomeBox}>
+  //    //                         <Text style={styles.welcomeText}>Welcome</Text>
+  //    //                         <Text style={styles.welcomeText}>{name}</Text>
+  //    //                       </View>
+  //    //                       <Button
+  //    //                           onPress={()=>thisBinded.setState({requesting:false, dataFound:false})}
+  //    //                           title="OK"
+  //    //                           color="blue"
+  //    //                       />
+  //    //                     </View>
+  //    //                   </View>;
+  //    //   thisBinded.welcome = <View style={styles.progressOverlay}>
+  //    //                     <View>
+  //    //                       <View style={styles.errorBox}>
+  //    //                         <Text style={styles.welcomeText}>ERROR</Text>
+  //    //                         <Text style={styles.welcomeText}>User not found</Text>
+  //    //                       </View>
+  //    //                       <Button
+  //    //                           onPress={()=>thisBinded.setState({requesting:false, dataFound:false})}
+  //    //                           title="OK"
+  //    //                       />
+  //    //                     </View>
+  //    //                   </View>;
+  //    //   thisBinded.setState({dataFound:true});
+  //    //   // Alert.alert('Barcode Found!',
+  //    //   // "Type: \nData: ",
+  //    //   // [{text:'OK', onPress: () => thisBinded.setState({requesting:false})}]);
+  //    // }, 1000);
+  //    //sheets api call
 
-    }
-  }
+  //  }
+  //}
 }
 
 const styles = StyleSheet.create({
