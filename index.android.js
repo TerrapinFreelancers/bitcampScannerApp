@@ -75,7 +75,7 @@ class bitcampScannerApp extends Component {
       this.setState({requesting:true});
       var thisBinded = this;
 
-      fetch('https://zkrpy6ly94.execute-api.us-east-1.amazonaws.com/prod/?status=success&email=' + data.data, {
+      fetch('https://32zll6wft7.execute-api.us-east-1.amazonaws.com/prod/?status=success&email=' + data.data, {
         method: 'GET',
         headers:{
           'x-api-key': config.apiKey
