@@ -75,7 +75,7 @@ class bitcampScannerApp extends Component {
       this.setState({requesting:true});
       var thisBinded = this;
 
-      fetch('https://32zll6wft7.execute-api.us-east-1.amazonaws.com/prod/?status=success&email=' + data.data, {
+      fetch('https://32zll6wft7.execute-api.us-east-1.amazonaws.com/final/?status=success&email=' + data.data, {
         method: 'GET',
         headers:{
           'x-api-key': config.apiKey
@@ -88,6 +88,7 @@ class bitcampScannerApp extends Component {
           // JSON.stringify(response),
           // [{text:'OK', onPress: () => thisBinded.setState({requesting:false})}]);
 
+          console.log(response);
           if (response.status === 200){
             let temporary = JSON.parse(response._bodyInit);
             let actualData = JSON.parse(temporary['body-json']);
