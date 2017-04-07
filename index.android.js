@@ -26,8 +26,9 @@ class bitcampScannerApp extends Component {
     this.welcome = null;
     this.state = {
       requesting:false,
-      dataFound:false
-    };
+      dataFound:false,
+      reading: false,
+   };
   }
 
   componentDidMount() {
@@ -45,17 +46,40 @@ class bitcampScannerApp extends Component {
                         color={['rgba(255, 63, 70, 1)', 'rgba(255, 111, 63, 1)', 'rgba(255, 175, 63, 1)']} />
                       </View>;
     }
-
-    return (
-      <View style={styles.container}>
-        <Camera
+    console.log(this.state.reading);
+    let cameraState;
+    let status;
+    if(this.state.reading){
+        cameraState = 
+        (<Camera
           ref={(cam) => {
             this.camera = cam;
           }}
-          onBarCodeRead={this.readQrCode}
+          style={styles.preview}
+          aspect={Camera.constants.Aspect.fill}
+          onBarCodeRead={this.readQrCode}>
+        </Camera>);
+        status = "SEARCHING"
+      }
+      else{
+        cameraState = 
+        (<Camera
+          ref={(cam) => {
+            this.camera = cam;
+          }}
           style={styles.preview}
           aspect={Camera.constants.Aspect.fill}>
-        </Camera>
+        </Camera>);
+        status = "STANDBY"
+      }
+   return (
+      <View style={styles.container}>
+        {cameraState}
+        <TouchableHighlight style={styles.button} onPress={() => this.setState({
+          reading:!this.state.reading
+        })} underlayColor="black">
+          <Text style={{fontWeight: 'bold', color: '#527fe4', fontSize: 35}}>{status}</Text>
+        </TouchableHighlight>
         {this.state.requesting && !this.state.dataFound && overlay}
         {this.state.requesting && !this.state.dataFound && progressCircle}
         {this.state.dataFound && this.welcome}
@@ -70,7 +94,7 @@ class bitcampScannerApp extends Component {
   }
 
   readQrCode(data){
-
+    console.log(this.state.reading);
     if (!this.state.requesting){
       this.setState({requesting:true});
       var thisBinded = this;
@@ -92,7 +116,6 @@ class bitcampScannerApp extends Component {
           if (response.status === 200){
             let temporary = JSON.parse(response._bodyInit);
             let actualData = JSON.parse(temporary['body-json']);
-
             let name = response.name;
             if (actualData.status === "success"){
               thisBinded.welcome = <View style={styles.progressOverlay}>
@@ -154,6 +177,9 @@ class bitcampScannerApp extends Component {
           thisBinded.setState({dataFound:true})
         });
     }
+    this.setState({
+     reading:!this.state.reading
+    })
   }
 
   //takePicture() {
@@ -278,7 +304,7 @@ const styles = StyleSheet.create({
     top: 0,
     opacity: .5,
     backgroundColor: 'white',
-    height: Dimensions.get('window').height,
+    height: Dimensions.get('window').height - 150,
     width: Dimensions.get('window').width
   },
   capture: {
@@ -288,6 +314,13 @@ const styles = StyleSheet.create({
     color: '#000',
     padding: 10,
     margin: 40
+  },
+  button:{
+
+    opacity: .5,
+    alignItems: 'center',
+    padding: 10,
+    margin: 40,
   }
 });
 
