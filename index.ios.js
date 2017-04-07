@@ -46,16 +46,18 @@ class bitcampScannerApp extends Component {
                       </View>;
     }
 
-    return (
+   return (
       <View style={styles.container}>
         <Camera
           ref={(cam) => {
             this.camera = cam;
           }}
-          onBarCodeRead={this.readQrCode}
           style={styles.preview}
           aspect={Camera.constants.Aspect.fill}>
         </Camera>
+        <TouchableHighlight style={styles.button} onPress={this.readQrCode} underlayColor="black">
+          <Text style={{fontWeight: 'bold', color: '#527fe4', fontSize: 35}}>SCAN</Text>
+        </TouchableHighlight>
         {this.state.requesting && !this.state.dataFound && overlay}
         {this.state.requesting && !this.state.dataFound && progressCircle}
         {this.state.dataFound && this.welcome}
@@ -287,6 +289,13 @@ const styles = StyleSheet.create({
     color: '#000',
     padding: 10,
     margin: 40
+  },
+  button:{
+
+    opacity: .5,
+    alignItems: 'center',
+    padding: 10,
+    margin: 40,
   }
 });
 
